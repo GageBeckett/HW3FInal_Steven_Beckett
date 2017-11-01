@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.swing.text.Style;
 import java.util.*;
 import java.lang.*;
 import java.io.*;
@@ -16,22 +17,60 @@ public class Main {
         | /      \ |
         (3)-------(4)
              9          */
-        MST t = new MST();
-        int graph[][] = new int[][] {{0, 2, 0, 6, 0},
-                {2, 0, 3, 8, 5},
-                {0, 3, 0, 0, 7},
-                {6, 8, 0, 0, 9},
-                {0, 5, 7, 9, 0},
+        try {
+            File file = new File("test.txt");
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuffer stringBuffer = new StringBuffer();
+            String line;
+            int i = 0;
+            while ((line = bufferedReader.readLine()) != null) {
+
+                if(!line.isEmpty()) {
+                    i++;
+                    stringBuffer.append(line);
+                    stringBuffer.append("\n");
+                }
+            }
+            fileReader.close();
+
+
+
+        MST t = new MST(i);
+            String arr = stringBuffer.toString();
+            String[] items = arr.replace("\n", "," ).replace(" ", ",").split(",");
+            int graph[][]= new int[i][i];
+            int count = 0;
+            for(int z=0; z < i; z++){
+                for(int q=0; q < i; q++){
+                    graph[z][q] = Integer.parseInt(items[count]);
+                    count++;
+
+                }
+            }
+/*
+            int graph[][] = new int[][] {{0, 4, 0, 0, 0, 8},
+                {4, 0, 7, 0, 0, 11},
+                {0, 7, 0, 2, 3, 0},
+                {0, 0, 2, 0, 6, 7},
+                {0, 0, 3, 6, 0, 1},
+                {8, 11, 0, 7, 1, 0}
         };
+*/
 
         // Print the solution
         t.primMST(graph);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 class MST {
     // Number of vertices in the graph
-    private static final int V = 5;
-
+    private int V;
+    public MST(int V){
+        this.V = V;
+    }
     // A utility function to find the vertex with minimum key
     // value, from the set of vertices not yet included in MST
     int minKey(int key[], Boolean mstSet[]) {
@@ -50,7 +89,7 @@ class MST {
     // A utility function to print the constructed MST stored in
     // parent[]
     void printMST(int parent[], int n, int graph[][]) {
-        System.out.println("Edge   Weight");
+        System.out.println("Node   Weight");
         for (int i = 1; i < V; i++)
             System.out.println(parent[i] + " - " + i + "    " +
                     graph[i][parent[i]]);
